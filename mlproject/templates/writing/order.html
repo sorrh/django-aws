@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EZ ORDER</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body class="w3-black">
+    <nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+      {% if request.session.login %}
+      <h6>{{request.session.login}}님 환영합니다</h6>
+      {% else %}
+      <h3>비회원 입니다.</h3>
+      {% endif %}
+      <a
+        href="/menu/main"
+        class="w3-bar-item w3-button w3-padding-large w3-black"
+      >
+        <i class="fa fa-home w3-xxlarge"></i>
+        <p>HOME</p>
+      </a>
+    </nav>
+
+    <div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+      <div
+        class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small"
+      >
+        <a href="#" class="w3-bar-item w3-button" style="width: 25% !important"
+          >HOME</a
+        >
+      </div>
+    </div>
+
+    <div class="w3-padding-large" id="main">
+      <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+        <h1 class="w3-jumbo"><span class="w3-hide-small">EZ</span> ORDER</h1>
+        <p>ALWAYS BESIDE YOU, EZ ORDER.</p>
+        <img
+          src="https://ediya.com/files/menu/IMG_1661754198118.png"
+          alt="메뉴사진"
+          class="w3-image"
+          width="300"
+          height="300"
+        />
+        <!--메뉴 사진-->
+        <style>
+          body,
+          h1,
+          h2,
+          h3,
+          h4,
+          h5,
+          h6 {
+            font-family: "Montserrat", sans-serif;
+          }
+          .w3-row-padding img {
+            margin-bottom: 12px;
+          }
+
+          /* Set the width of the sidebar to 120px */
+          .w3-sidebar {
+            width: 120px;
+            background: #222;
+          }
+          /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+
+          #main {
+            margin-left: 120px;
+          }
+          /* Remove margins from "page content" on small screens */
+
+          @media only screen and (max-width: 600px) {
+            #main {
+              margin-left: 0;
+            }
+          }
+        </style>
+      </header>
+      <div
+        class="w3-content w3-center w3-justify w3-text-grey w3-padding-64"
+        id="about"
+      >
+        <h2 class="w3-text-light-grey">연유밀크티</h2>
+        <!--메뉴 이름-->
+        <hr class="w3-opacity" />
+        <p>
+          연유의 달콤함과 묵직하고 부드러운 밀크티 크림의 은은한 향미를 밸런스
+          있게 느낄 수 있는 음료
+        </p>
+        <!--메뉴 설명-->
+
+        <hr class="w3-opacity" />
+        <h4 class="w3-text-light-grey">수량 체크</h4>
+
+        {% block content %}
+        <div class="container" style="float: center">
+          <div style="float: center">
+            <canvas
+              class="w3-white"
+              id="can"
+              width="280"
+              height="280"
+              style="top: 10%; left: 10%; border: 2px solid"
+            ></canvas>
+          </div>
+          <div style="display: inline-block">
+            <input
+              type="button"
+              value="수정"
+              id="clr"
+              size="23"
+              onclick="erase()"
+              hidden
+            />
+          </div>
+          <div>
+            <button
+              id="clr"
+              onclick="javascript:erase();"
+              class="w3-button w3-gray w3-small"
+            >
+              지우기
+            </button>
+            <button
+              onclick="javascript:recognize(); document.getElementById('id01').style.display='block'"
+              class="w3-button w3-gray w3-small"
+            >
+              수량확인
+            </button>
+            <button
+              id="btn_order"
+              onclick="javascript:recognize(); document.getElementById('id01').style.display='block'"
+              class="w3-button w3-gray w3-small"
+              disabled
+            >
+              주문하기
+            </button>
+          </div>
+
+          <div style="display: inline-block; padding-left: 10px">
+            <input
+              type="button"
+              value="인식"
+              id="recognize"
+              size="23"
+              onclick="recognize()"
+              hidden
+            />
+          </div>
+
+          {% comment %} {% endcomment %}
+          <div id="id01" class="w3-modal">
+            <div
+              class="w3-modal-content w3-card-4 w3-animate-zoom w3-light-grey"
+              style="max-width: 400px"
+            >
+              <div class="w3-center">
+                <br />
+                <span
+                  onclick="document.getElementById('id01').style.display='none'"
+                  class="w3-button w3-xlarge w3-hover-red w3-display-topright"
+                  title="Close Modal"
+                  >&times;</span
+                >
+              </div>
+
+              {% comment %}
+              <form class="w3-container" action="/action_page.php">
+                <div class="w3-section">
+                  <label><b>Username</b></label>
+                  <input
+                    class="w3-input w3-border w3-margin-bottom"
+                    type="text"
+                    placeholder="Enter Username"
+                    name="usrname"
+                    required
+                  />
+                  <label><b>Password</b></label>
+                  <input
+                    class="w3-input w3-border"
+                    type="password"
+                    placeholder="Enter Password"
+                    name="psw"
+                    required
+                  />
+                  <button
+                    class="w3-button w3-block w3-green w3-section w3-padding"
+                    type="submit"
+                  >
+                    Login
+                  </button>
+                  <input
+                    class="w3-check w3-margin-top"
+                    type="checkbox"
+                    checked="checked"
+                  />
+                  Remember me
+                </div>
+              </form>
+              {% endcomment %}
+
+              <div class="w3-container w3-padding-16">
+                <p id="ck_order" style="display: inline"></p>
+                <p style="display: inline">개 주문이 맞습니까?</p>
+                <br />
+                <br />
+                <div>
+                  <button
+                    id="btn_ok"
+                    onclick="document.getElementById('btn_order').disabled=false; document.getElementById('id01').style.display='none'"
+                    type="button"
+                    class="w3-button w3-green"
+                  >
+                    확인
+                  </button>
+                  <button
+                    id="btn_cancel"
+                    onclick="document.getElementById('id01').style.display='none'"
+                    type="button"
+                    class="w3-button w3-red"
+                  >
+                    취소
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% comment %} {% endcomment %}
+
+          <div style="display: inline-block; padding-left: 10px">
+            <input
+              type="button"
+              value="주문"
+              onclick="location.href='http://127.0.0.1:8000/menu/main/'"
+              disabled
+              hidden
+            />
+          </div>
+          <div style="display: none">
+            <input type="checkbox" id="preprocessing" />
+            <span style="margin-left: 5px">Display Preprocessing</span>
+          </div>
+          <div style="display: none">
+            <input type="checkbox" id="scaleStrokeWidth" checked="true" />
+            <span style="margin-left: 5px">Scale Stroke Width</span>
+          </div>
+          <div style="float: center"></div>
+
+          <div style="display: none">
+            <a
+              href=""
+              id="save"
+              size="23"
+              onclick="save(this)"
+              download="tmp.png"
+              >저장</a
+            >
+          </div>
+          <div id="nnInput"></div>
+        </div>
+        <div style="display: none" id="nnOut"></div>
+        <div style="display: none"></div>
+      </div>
+      <div id="errorDiv" style="color: #ff0000"></div>
+    </div>
+    {% endblock %}
+  </body>
+  {% load static %}
+  <script src="{% static 'js/order.js' %}" type="text/javascript"></script>
+  <script src="/static/js/order.js" type="text/javascript"></script>
+</html>
